@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TechStore - Tienda online moderna desarrollada para el curso Front-End 2026.">
+  <title>TechStore | E-Commerce Profesional</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ENCABEZADO PRINCIPAL (HEADER) -->
+  <header class="header">
+    <div class="header__container">
+      <div class="header__left">
+        <button id="btn-menu" class="header__icon-btn" aria-label="Abrir menú">
+          <span class="hamburger-icon">☰</span>
+        </button>
+        <a href="#" class="header__logo">TechStore</a>
+      </div>
+
+      <div class="header__search">
+        <input type="text" id="input-busqueda" placeholder="Buscar productos por nombre..." aria-label="Buscar productos">
+      </div>
+
+      <div class="header__right">
+        <button id="btn-carrito" class="header__cart-btn" aria-label="Ver carrito de compras">
+          <span class="cart-icon">🛒</span>
+          <span id="cart-counter" class="cart-badge">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- PANEL LATERAL DESPLEGABLE (SIDEBAR) -->
+  <div id="sidebar-overlay" class="overlay"></div>
+  <aside id="sidebar-menu" class="sidebar">
+    <div class="sidebar__header">
+      <h2>Menú</h2>
+      <button id="close-sidebar" class="sidebar__close" aria-label="Cerrar menú">&times;</button>
+    </div>
+
+    <div id="sidebar-user-container" class="sidebar__user-section"></div>
+
+    <hr class="sidebar__divider">
+
+    <h3 class="sidebar__subtitle">Categorías</h3>
+    <nav id="categorias-container" class="sidebar__nav">
+      <button class="btn-categoria active" data-category="all">Todas las categorías</button>
+    </nav>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+    <div class="products-toolbar">
+      <p id="total-results" class="products-toolbar__count">Cargando catálogo...</p>
+      <div class="products-toolbar__sort">
+        <label for="select-orden">Ordenar por:</label>
+        <select id="select-orden" aria-label="Ordenar productos">
+          <option value="default">Relevancia</option>
+          <option value="price-asc">Precio: Menor a Mayor</option>
+          <option value="price-desc">Precio: Mayor a Menor</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="loading-spinner" class="spinner">Cargando productos...</div>
+    <section id="productos-container" class="products-grid"></section>
+  </main>
+
+  <!-- MODAL LATERAL DEL CARRITO -->
+  <div id="cart-overlay" class="overlay"></div>
+  <div id="cart-modal" class="modal-cart">
+    <div class="modal-cart__header">
+      <h2>Tu Carrito</h2>
+      <button id="close-cart" class="modal-cart__close" aria-label="Cerrar carrito">&times;</button>
+    </div>
+
+    <div id="cart-items" class="modal-cart__body"></div>
+
+    <div class="modal-cart__footer">
+      <div class="cart-total">
+        <span>Total estimado:</span>
+        <span id="cart-total-price">$0.00</span>
+      </div>
+      <button id="btn-checkout" class="btn-primary">Finalizar Compra</button>
+      <button id="btn-vaciar-carrito" class="btn-secondary">Vaciar Carrito</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE DETALLE DE PRODUCTO -->
+  <div id="product-modal-overlay" class="overlay"></div>
+  <div id="product-modal" class="modal-product">
+    <button id="close-product-modal" class="modal-product__close" aria-label="Cerrar detalle">&times;</button>
+    <div id="product-modal-content" class="modal-product__body"></div>
+  </div>
+
+  <!-- MODAL DE AUTENTICACIÓN -->
+  <div id="auth-modal-overlay" class="overlay"></div>
+  <div id="auth-modal" class="modal-auth">
+    <button id="close-auth-modal" class="modal-auth__close" aria-label="Cerrar modal">&times;</button>
+    
+    <div class="auth-tabs">
+      <button id="tab-login" class="auth-tab active">Iniciar Sesión</button>
+      <button id="tab-register" class="auth-tab">Crear Cuenta</button>
+    </div>
+
+    <form id="form-login" class="auth-form active">
+      <div class="form-group">
+        <label for="login-email">Correo Electrónico</label>
+        <input type="email" id="login-email" required placeholder="ejemplo@dominio.com">
+      </div>
+      <div class="form-group">
+        <label for="login-password">Contraseña</label>
+        <input type="password" id="login-password" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem;">Ingresar</button>
+    </form>
+
+    <form id="form-register" class="auth-form">
+      <div class="form-group">
+        <label for="reg-nombre">Nombre Completo</label>
+        <input type="text" id="reg-nombre" required minlength="3" placeholder="Juan Pérez">
+      </div>
+      <div class="form-group">
+        <label for="reg-email">Correo Electrónico</label>
+        <input type="email" id="reg-email" required placeholder="ejemplo@dominio.com">
+      </div>
+      <div class="form-group">
+        <label for="reg-telefono">Teléfono de Contacto</label>
+        <input type="tel" id="reg-telefono" required placeholder="11 4444-5555">
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Contraseña (mínimo 6 caracteres)</label>
+        <input type="password" id="reg-password" minlength="6" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn-primary" style="width: 100%; margin-top: 0.5rem;">Registrarme</button>
+    </form>
+  </div>
+
+  <!-- MODAL DE CHECKOUT CON AUTOCOMPLETADO DE CALLE -->
+  <div id="checkout-modal-overlay" class="overlay"></div>
+  <div id="checkout-modal" class="modal-checkout">
+    <button id="close-checkout-modal" class="modal-checkout__close" aria-label="Cerrar formulario">&times;</button>
+    <h2>Datos de Envío y Pago</h2>
+    <form id="checkout-form" class="checkout-form">
+      <div class="form-group">
+        <label for="nombre">Nombre Completo</label>
+        <input type="text" id="nombre" required placeholder="Juan Pérez">
+      </div>
+      <div class="form-group">
+        <label for="email">Correo Electrónico</label>
+        <input type="email" id="email" required placeholder="juan@ejemplo.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="provincia">Provincia</label>
+        <select id="provincia" required>
+          <option value="">Seleccione su provincia...</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="localidad">Localidad / Municipio</label>
+        <select id="localidad" required disabled>
+          <option value="">Seleccione primero una provincia...</option>
+        </select>
+      </div>
+
+      <!-- Campo de Calle con Sugerencias Flotantes -->
+      <div class="form-group form-group--relative">
+        <label for="direccion">Calle y Altura (Escriba para buscar)</label>
+        <input type="text" id="direccion" required autocomplete="off" placeholder="Ej: Av. Corrientes 1234">
+        <ul id="sugerencias-calle" class="autocomplete-list"></ul>
+      </div>
+
+      <div class="form-group">
+        <label for="tarjeta">Número de Tarjeta de Crédito/Débito</label>
+        <input type="text" id="tarjeta" required placeholder="4509 1234 5678 9012" maxlength="19">
+      </div>
+
+      <div class="checkout-summary">
+        <p>Total a Pagar: <strong id="checkout-total-price">$0.00</strong></p>
+      </div>
+      <button type="submit" class="btn-primary">Confirmar y Pagar</button>
+    </form>
+  </div>
+
+  <!-- NOTIFICACIONES TOAST -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- SCRIPTS JS -->
+  <script src="js/api.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
